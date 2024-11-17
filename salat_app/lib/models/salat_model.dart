@@ -10,7 +10,7 @@ class Salat {
     final Map<String, dynamic> gregorian = json['data']['date']['gregorian'];
 
     final String hijriDate =
-        "${hijri['day']} ${hijri['month']['ar']} ${hijri['year']}";
+        " ${hijri['year']} ${hijri['month']['ar']} ${hijri['day']} ";
     final String gregorianDate =
         "${gregorian['month']['en']} ${gregorian['day']}, ${gregorian['year']}";
 

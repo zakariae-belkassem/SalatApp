@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salat_app/models/salat_model.dart';
 import 'package:salat_app/services/Myservice.dart';
+import 'package:lottie/lottie.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -45,8 +46,11 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Lottie.asset('assets/mosque.json'),
             Text(_salat?.date ?? "loading"),
-            Text('${_salat?.prayerTime}')
+            ...?_salat?.prayerTime.entries
+                .map((entry) => Text('${entry.key}: ${entry.value}'))
+                .toList(),
           ],
         ),
       ),
