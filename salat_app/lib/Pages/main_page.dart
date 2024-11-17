@@ -13,15 +13,18 @@ class _MainPageState extends State<MainPage> {
   Salat? _salat;
   final _myService = Myservice();
 
+  Future<String> getData() {
+    return _myService.getCurrentCity();
+  }
+
   _fetchData() async {
     String city = await _myService.getCurrentCity();
     String country = await _myService.getCurrentCountry();
 
     try {
-      final my_obj = await _myService.getSalatTime(city, country);
+      final tempo = await _myService.getSalatTime(city, country);
       setState(() {
-        my_obj.cityName = city;
-        _salat = my_obj;
+        _salat = tempo;
       });
     } catch (e) {
       //
@@ -30,7 +33,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _fetchData();

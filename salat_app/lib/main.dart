@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:salat_app/Pages/main_page.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());

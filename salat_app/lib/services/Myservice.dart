@@ -20,9 +20,7 @@ class Myservice {
     final response = await http.get(
         Uri.parse('$BASE_URL/$formattedDate?country=$country&city=$cityName'));
     if (response.statusCode == 200) {
-      Salat temp = Salat.fromJson(jsonDecode(response.body));
-      temp.cityName = cityName;
-      return temp;
+      return Salat.fromJson(jsonDecode(response.body), cityName);
     }
     throw Exception("Failed to fetch from server please try again later");
   }
