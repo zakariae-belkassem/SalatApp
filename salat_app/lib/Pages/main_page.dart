@@ -41,11 +41,14 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Text(_salat?.date ?? "loading"),
-          Text('${_salat?.prayerTime.values}')
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_salat?.date ?? "loading"),
+            Text('${_salat?.prayerTime}')
+          ],
+        ),
       ),
     );
   }
