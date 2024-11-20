@@ -39,6 +39,7 @@ class _MainPageState extends State<MainPage> {
     _fetchData();
   }
 
+  List tt = ["Fajr","Dhu"]
   @override
   Widget build(BuildContext context) {
     return Scaffold(
