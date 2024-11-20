@@ -49,8 +49,7 @@ class _MainPageState extends State<MainPage> {
             Lottie.asset('assets/mosque.json'),
             Text(_salat?.date ?? "loading"),
             ...?_salat?.prayerTime.entries
-                .map((entry) => Text('${entry.key}: ${entry.value}'))
-                .toList(),
+                .map((entry) => Text('${entry.key}: ${entry.value}')),
           ],
         ),
       ),
