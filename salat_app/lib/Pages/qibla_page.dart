@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class QiblaPage extends StatefulWidget {
@@ -20,7 +23,7 @@ class _QiblaPageState extends State<QiblaPage> {
     return Scaffold(
       body: Builder(builder: (context) {
         if (_hasPermission) {
-          return _builCompass();
+          return _buildCompass();
         } else {
           return _builsPermissionSheet();
         }
@@ -39,8 +42,40 @@ class _QiblaPageState extends State<QiblaPage> {
         });
   }
 
-  Widget _builCompass() {
-    return Scaffold();
+  Widget _buildCompass() {
+    return StreamBuilder<CompassEvent>(
+      stream: Stream.periodic(
+        Duration(milliseconds: 200),
+        (_) => FlutterCompass.events!.first,
+      ).asyncExpand(
+          (eventFuture) => eventFuture.asStream()), // Resolve future events
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error"),
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        double? direction = snapshot.data?.heading;
+        if (direction == null) {
+          return Center(
+            child: Text("Not supported by your device"),
+          );
+        }
+        return Center(
+          child: Container(
+            padding: EdgeInsets.all(25),
+            child: Transform.rotate(
+              angle: direction * (pi / 180) * -1,
+              child: Image.asset("assets/icons/qibla-compass.png"),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget _builsPermissionSheet() {

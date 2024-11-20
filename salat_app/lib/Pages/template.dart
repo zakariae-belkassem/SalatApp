@@ -39,7 +39,7 @@ class _templateState extends State<Template> {
                 label: "Home"),
             BottomNavigationBarItem(
                 icon: Image.asset(
-                  "assets/icons/qibla-compass.png",
+                  "assets/icons/qibla-compass2.png",
                   width: 24,
                   height: 24,
                 ),
