@@ -15,17 +15,42 @@ class _MapMosques extends State<MapMosques> {
   double? latitude;
   double? longitude;
   void myfunction() async {
-    this.latitude = await service!.getLat();
-    this.longitude = await service!.getLong();
+    latitude = await service!.getLat();
+    longitude = await service!.getLong();
+    if (latitude == null || longitude == null) {
+      Future.delayed(Duration(seconds: 15), () {
+        myfunction();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    myfunction();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    myfunction();
+    // ignore: avoid_print
+    print(latitude);
     return FlutterMap(
         options: MapOptions(
-          initialCenter: LatLng(latitude!, longitude!),
+          initialCenter: LatLng(latitude ?? 34.023609, longitude ?? -6.837820),
+          initialZoom: 11,
         ),
-        children: []);
+        children: [
+          openStreetMapTileLayer,
+          MarkerLayer(markers: [
+            Marker(
+                point: LatLng(latitude ?? 34.023609, longitude ?? -6.837820),
+                child: Icon(Icons.location_pin))
+          ])
+        ]);
   }
 }
+
+TileLayer get openStreetMapTileLayer => TileLayer(
+      urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      userAgentPackageName: 'dev.flutter.example',
+    );
