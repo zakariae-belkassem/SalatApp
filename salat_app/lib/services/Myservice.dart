@@ -12,15 +12,18 @@ class Myservice {
   static const BASE_URL = "http://api.aladhan.com/v1/timingsByCity";
 
   Myservice();
+  Salat? salat;
 
-  Future<Salat> getSalatTime(String cityName, String country) async {
+  Future<Salat?> getSalatTime(String cityName, String country) async {
+    if (salat != null) return salat;
     var now = DateTime.now();
     var formatter = DateFormat('dd-MM-yyyy');
     String formattedDate = formatter.format(now);
     final response = await http.get(
         Uri.parse('$BASE_URL/$formattedDate?country=$country&city=$cityName'));
     if (response.statusCode == 200) {
-      return Salat.fromJson(jsonDecode(response.body), cityName);
+      salat = Salat.fromJson(jsonDecode(response.body), cityName);
+      return salat;
     }
     throw Exception("Failed to fetch from server please try again later");
   }
