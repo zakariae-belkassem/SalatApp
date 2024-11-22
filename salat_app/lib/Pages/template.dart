@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salat_app/Pages/main_page.dart';
+import 'package:salat_app/Pages/map_mosques.dart';
 import 'package:salat_app/Pages/qibla_page.dart';
 
 class Template extends StatefulWidget {
@@ -9,7 +10,7 @@ class Template extends StatefulWidget {
 }
 
 int myIndex = 0;
-List<Widget> widgetList = const [MainPage(), QiblaPage(), Text("data")];
+List<Widget> widgetList = const [MainPage(), QiblaPage(), MapMosques()];
 
 // ignore: camel_case_types
 class _templateState extends State<Template> {

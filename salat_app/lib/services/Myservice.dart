@@ -61,4 +61,18 @@ class Myservice {
 
     return city ?? "Morocco";
   }
+
+  Future<double> getLat() async {
+    Position pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+
+    return pos.latitude;
+  }
+
+  Future<double> getLong() async {
+    Position pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+
+    return pos.longitude;
+  }
 }

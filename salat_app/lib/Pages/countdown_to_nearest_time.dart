@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 class CountdownToNearestTime extends StatefulWidget {
@@ -60,6 +61,9 @@ class _CountdownToNearestTimeState extends State<CountdownToNearestTime> {
         setState(() {
           _timeRemaining -= Duration(seconds: 1);
           if (_timeRemaining <= Duration.zero) {
+            AwesomeNotifications().createNotification(
+                content: NotificationContent(
+                    id: 1, channelKey: 'basic_channel', title: _nextTimeKey));
             _calculateNearestTime(); // Recalculate when the countdown ends
           }
         });

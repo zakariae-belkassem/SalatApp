@@ -46,6 +46,10 @@ dependencies:
   flutter_timer_countdown: ^1.0.7
   awesome_notifications: ^0.10.0
   loading_animation_widget: ^1.3.0
+  google_maps_flutter: ^2.10.0
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  
 
 dev_dependencies:
   flutter_test:
