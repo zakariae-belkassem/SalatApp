@@ -11,7 +11,7 @@ class CountdownToNearestTime extends StatefulWidget {
 
 class _CountdownToNearestTimeState extends State<CountdownToNearestTime> {
   Map<String, String> time;
-
+  List tt = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
   _CountdownToNearestTimeState(this.time);
   Timer? _timer;
   Duration _timeRemaining = Duration.zero;
@@ -30,6 +30,9 @@ class _CountdownToNearestTimeState extends State<CountdownToNearestTime> {
     String? nearestKey;
 
     time.forEach((key, value) {
+      if (!tt.contains(key)) {
+        return;
+      }
       final split = value.split(":");
       final targetTime = DateTime(now.year, now.month, now.day,
           int.parse(split[0]), int.parse(split[1]));
