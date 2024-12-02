@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:salat_app/Pages/main_page.dart';
 import 'package:salat_app/Pages/map_mosques.dart';
 import 'package:salat_app/Pages/qibla_page.dart';
@@ -20,32 +22,26 @@ class _templateState extends State<Template> {
       body: Center(
         child: widgetList[myIndex],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          //backgroundColor: Colors.black,
-          fixedColor: const Color.fromARGB(255, 6, 184, 255),
-          onTap: (value) => {
-                setState(() {
-                  myIndex = value;
-                })
-              },
-          currentIndex: myIndex,
-          items: [
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  "assets/icons/mosque.png",
-                  width: 24,
-                  height: 24,
-                ),
-                label: "Home"),
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  "assets/icons/qibla-compass2.png",
-                  width: 24,
-                  height: 24,
-                ),
-                label: "Qibla"),
-            BottomNavigationBarItem(icon: Icon(Icons.adb), label: "smthng2"),
+      bottomNavigationBar: GNav(
+          selectedIndex: myIndex,
+          onTabChange: (index) {
+            setState(() {
+              myIndex = index;
+            });
+          }, // navigation bar padding
+          tabs: [
+            GButton(
+              icon: LineIcons.mosque,
+              text: 'Prayers Time',
+            ),
+            GButton(
+              icon: LineIcons.compass,
+              text: 'Qibla',
+            ),
+            GButton(
+              icon: LineIcons.map,
+              text: 'Mosques',
+            ),
           ]),
     );
   }
