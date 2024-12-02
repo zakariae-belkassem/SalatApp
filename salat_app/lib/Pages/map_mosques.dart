@@ -10,7 +10,7 @@ class MapMosques extends StatefulWidget {
 }
 
 class _MapMosques extends State<MapMosques> {
-  Myservice? service = Myservice();
+  MosqueService? service = MosqueService();
   double? latitude;
   double? longitude;
   List<Marker> mosqueMarkers = [];
@@ -33,10 +33,9 @@ class _MapMosques extends State<MapMosques> {
     if (mosques != null) {
       mosqueMarkers = mosques.map((mosque) {
         return Marker(
-            point: LatLng(latitude ?? 34.023609, longitude ?? -6.837820),
-            child: Icon(Icons.location_pin));
+            point: LatLng(mosque['lat'], mosque['lon']),
+            child: Icon(Icons.place, color: Colors.red));
       }).toList();
-      setState(() {});
     }
   }
 
