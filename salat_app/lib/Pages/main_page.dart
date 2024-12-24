@@ -15,10 +15,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   Map<String, String>? prayerTime;
-  //fetch data
+  // Fetch data
   Salat? _salat;
   final _myService = Myservice();
   bool _showCountdown = false;
+
   Future<String> getData() {
     return _myService.getCurrentCity();
   }
@@ -45,44 +46,84 @@ class _MainPageState extends State<MainPage> {
     _fetchData();
   }
 
-  List tt = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+  List<String> tt = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
   @override
   Widget build(BuildContext context) {
-    final tt = [
-      'Fajr',
-      'Dhuhr',
-      'Asr',
-      'Maghrib',
-      'Isha'
-    ]; // Example prayer keys
     return Scaffold(
-      body: Center(
+      appBar: AppBar(
+        title: const Text("Prayer Times"),
+        titleTextStyle: TextStyle(color: Colors.white),
+        centerTitle: true,
+        backgroundColor: Colors.grey[900],
+      ),
+      body: Container(
+        color: Colors.grey[850],
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 105,
-              child: _showCountdown
-                  ? CountdownToNearestTime(prayerTime!)
-                  : LoadingAnimationWidget.staggeredDotsWave(
-                      color: Colors.black, size: 50),
-            ),
-            Lottie.asset('assets/mosque.json'),
-            Text(
-              _salat?.date ?? "loading",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            ...?prayerTime?.entries
-                .where((entry) => tt.contains(entry.key))
-                .map(
-                  (entry) => Column(
+            // Header with location and date
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${entry.key} : ${entry.value}',
-                      ),
+                      Row(),
                     ],
                   ),
+                ],
+              ),
+            ),
+            // Countdown section
+            SizedBox(
+              height: 105,
+              child: Center(
+                child: _showCountdown
+                    ? CountdownToNearestTime(prayerTime!)
+                    : LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.white, size: 50),
+              ),
+            ),
+            // Date display
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                _salat?.date ?? "",
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
                 ),
+              ),
+            ),
+            // List of prayer times
+            Expanded(
+              child: ListView(
+                children: prayerTime?.entries
+                        .where((entry) => tt.contains(entry.key))
+                        .map(
+                          (entry) => ListTile(
+                            leading:
+                                const Icon(Icons.timelapse, color: Colors.grey),
+                            title: Text(
+                              entry.key,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            trailing: Text(
+                              entry.value,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        )
+                        .toList() ??
+                    [],
+              ),
+            ),
           ],
         ),
       ),

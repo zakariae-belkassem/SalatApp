@@ -51,9 +51,8 @@ dependencies:
   latlong2: ^0.9.1
   google_nav_bar: ^5.0.7
   line_icons: ^2.0.3
-  internet_connection_checker_plus: ^2.5.2
-  connectivity_plus: ^6.1.0
-  #connectivity_plus: ^3.0.2
+  connectivity_plus: ^6.1.1
+  location: ^7.0.1
   
 
 dev_dependencies:

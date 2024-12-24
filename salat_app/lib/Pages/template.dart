@@ -5,6 +5,7 @@ import 'package:salat_app/Pages/main_page.dart';
 import 'package:salat_app/Pages/map_mosques.dart';
 import 'package:salat_app/Pages/qibla_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:http/http.dart' as http;
 
 class Template extends StatefulWidget {
   const Template({super.key});
@@ -13,12 +14,11 @@ class Template extends StatefulWidget {
   State<StatefulWidget> createState() => _TemplateState();
 }
 
-int myIndex = 0;
-List<Widget> widgetList = const [MainPage(), QiblaPage(), MapMosques()];
-
-// ignore: camel_case_types
 class _TemplateState extends State<Template> {
+  int myIndex = 0;
   bool isConnected = true;
+
+  List<Widget> widgetList = const [MainPage(), QiblaPage(), MapMosques()];
 
   @override
   void initState() {
@@ -27,70 +27,113 @@ class _TemplateState extends State<Template> {
   }
 
   void checkConnectivity() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    final connectivityResults = await Connectivity().checkConnectivity();
+    _updateConnectionStatus(connectivityResults.firstOrNull);
+
+    // Listen for connectivity changes
+    Connectivity().onConnectivityChanged.listen((results) {
+      _updateConnectionStatus(results.firstOrNull);
+    });
+  }
+
+  void _updateConnectionStatus(ConnectivityResult? result) async {
+    if (result != null && result != ConnectivityResult.none) {
+      // Check for real internet access
+      bool hasInternet = await _isInternetAvailable();
       setState(() {
-        isConnected = false;
+        isConnected = hasInternet;
       });
     } else {
       setState(() {
-        isConnected = true;
+        isConnected = false;
       });
     }
+  }
 
-    Connectivity().onConnectivityChanged.listen((result) {
-      setState(() {
-        isConnected = result != ConnectivityResult.none;
-      });
-    });
+  /// Perform a simple HTTP check to ensure real internet access
+  Future<bool> _isInternetAvailable() async {
+    try {
+      final response = await http.get(Uri.parse('https://google.com'));
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: !isConnected
-          ? Center(
-              child: widgetList[myIndex],
-            )
+      backgroundColor: Colors.grey[850], // Dark grey background
+      body: isConnected
+          ? widgetList[myIndex]
           : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Icon(
                     Icons.wifi_off,
-                    size: 50,
-                    color: Colors.red,
+                    size: 60,
+                    color: Colors.grey[400],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
-                    'Internet is required to use this application.',
+                    'No Internet Connection',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18, color: Colors.black),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Please check your network.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[400],
+                    ),
                   ),
                 ],
               ),
             ),
-      bottomNavigationBar: GNav(
-        selectedIndex: myIndex,
-        onTabChange: (index) {
-          setState(() {
-            myIndex = index;
-          });
-        },
-        tabs: [
-          GButton(
-            icon: LineIcons.mosque,
-            text: 'Prayers Time',
+      bottomNavigationBar: Container(
+        color: Colors.grey[900], // Slightly darker grey for the nav bar
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: GNav(
+              selectedIndex: myIndex,
+              gap: 8,
+              color: Colors.grey[400], // Inactive tab color
+              activeColor: Colors.white, // Active tab text/icon color
+              iconSize: 24,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: const Duration(milliseconds: 600),
+              tabBackgroundColor: const Color.fromARGB(
+                  255, 71, 71, 71), // Active tab background (Green)
+              tabs: const [
+                GButton(
+                  icon: LineIcons.mosque,
+                  text: 'Prayers',
+                ),
+                GButton(
+                  icon: LineIcons.compass,
+                  text: 'Qibla',
+                ),
+                GButton(
+                  icon: LineIcons.map,
+                  text: 'Mosques',
+                ),
+              ],
+              onTabChange: (index) {
+                setState(() {
+                  myIndex = index;
+                });
+              },
+            ),
           ),
-          GButton(
-            icon: LineIcons.compass,
-            text: 'Qibla',
-          ),
-          GButton(
-            icon: LineIcons.map,
-            text: 'Mosques',
-          ),
-        ],
+        ),
       ),
     );
   }

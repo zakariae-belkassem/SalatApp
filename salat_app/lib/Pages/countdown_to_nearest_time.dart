@@ -89,18 +89,22 @@ class _CountdownToNearestTimeState extends State<CountdownToNearestTime> {
           children: [
             if (_nextTimeKey != null)
               Text(
-                "Next Prayer : ${time[_nextTimeKey!]} ($_nextTimeKey)",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                "Next Prayer  $_nextTimeKey ${time[_nextTimeKey!]} ",
+                style: TextStyle(fontSize: 24, color: Colors.white),
               ),
             Text(
               "${hours.toString().padLeft(2, '0')}:"
               "${minutes.toString().padLeft(2, '0')}:"
               "${seconds.toString().padLeft(2, '0')}",
-              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ],
         ),
       ),
+      backgroundColor: Colors.grey[850],
     );
   }
 }
