@@ -5,7 +5,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:salat_app/Pages/countdown_to_nearest_time.dart';
 import 'package:salat_app/models/salat_model.dart';
 import 'package:salat_app/services/Myservice.dart';
-import 'package:lottie/lottie.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
